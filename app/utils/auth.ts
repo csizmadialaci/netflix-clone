@@ -5,6 +5,9 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import type { Adapter } from "next-auth/adapters";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -18,15 +21,16 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
+      sendVerificationRequest: async ({ identifier: email, url, provider }) => {
+        const { host } = new URL(url);
+        await resend.emails.send({
+          from: "onboarding@resend.dev", // Use a verified sender email
+          to: email,
+          subject: "Sign in to your account",
+          html: `<p>Sign in to your account by clicking <a href="${url}">here</a></p>`,
+        });
       },
-      from: process.env.EMAIL_FROM,
+      from: "onboarding@resend.dev", // Use a verified sender email
     }),
   ],
 };
