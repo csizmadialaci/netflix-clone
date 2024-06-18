@@ -24,13 +24,13 @@ export const authOptions: NextAuthOptions = {
       sendVerificationRequest: async ({ identifier: email, url, provider }) => {
         const { host } = new URL(url);
         await resend.emails.send({
-          from: "onboarding@resend.dev", // Use a verified sender email
+          from: "csimadialacko@gmail.com", // Use a verified sender email
           to: email,
           subject: "Sign in to your account",
           html: `<p>Sign in to your account by clicking <a href="${url}">here</a></p>`,
         });
       },
-      from: "onboarding@resend.dev", // Use a verified sender email
+      from: "csimadialacko@gmail.com", // Use a verified sender email
     }),
   ],
 };
