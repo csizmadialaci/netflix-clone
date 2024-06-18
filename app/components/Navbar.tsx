@@ -5,6 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { BellIcon, SearchIcon } from "lucide-react";
 import UserNav from "./UserNav";
+import { useState } from "react";
+import SearchBar from "./SearchBar";
 
 interface LinkProps {
   name: string;
@@ -21,6 +23,7 @@ const links: LinkProps[] = [
 
 export default function Navbar() {
   const pathName = usePathname();
+  const [open, setOpen] = useState(false);
   return (
     <div className="w-full max-w-7xl mx-auto items-center justify-between px-5 sm:px-6 py-6 lg:px-8 flex">
       <div className="flex items-center">
@@ -55,7 +58,15 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="flex items-center gap-x-8">
-        <SearchIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
+        <button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <SearchIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
+        </button>
+        <SearchBar state={open} changeState={setOpen} />
+
         <BellIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
         <UserNav />
       </div>

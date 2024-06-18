@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "./utils/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./utils/auth";
+import { redirect } from "next/navigation";
 
 export async function addToWatchList(formData: FormData) {
   "use server";
@@ -31,4 +32,34 @@ export async function deleteFromWatchList(formData: FormData) {
     },
   });
   revalidatePath(pathName);
+}
+
+export async function searchMovies(searchInput: string) {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.email;
+
+  const movies = await prisma.movie.findMany({
+    where: {
+      title: {
+        contains: searchInput as string,
+        mode: "insensitive",
+      },
+    },
+    select: {
+      age: true,
+      duration: true,
+      id: true,
+      title: true,
+      release: true,
+      imageString: true,
+      overview: true,
+      youtubeString: true,
+      WatchLists: {
+        where: {
+          userId: userId as string,
+        },
+      },
+    },
+  });
+  return movies;
 }
