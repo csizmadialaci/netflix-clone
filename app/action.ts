@@ -3,7 +3,6 @@ import { revalidatePath } from "next/cache";
 import prisma from "./utils/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./utils/auth";
-import { redirect } from "next/navigation";
 
 export async function addToWatchList(formData: FormData) {
   "use server";
@@ -62,4 +61,11 @@ export async function searchMovies(searchInput: string) {
     },
   });
   return movies;
+}
+
+export async function getUserSession() {
+  const session = await getServerSession(authOptions);
+  const userName = session?.user?.name || "";
+  const userEmail = session?.user?.email || "";
+  return { userName, userEmail };
 }

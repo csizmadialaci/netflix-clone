@@ -10,15 +10,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { getUserSession } from "../action";
 
 export default function UserNav() {
+  const [userSession, setUserSession] = useState({
+    userName: "",
+    userEmail: "",
+  });
+
+  useEffect(() => {
+    async function fetchUserData() {
+      const session = await getUserSession();
+      setUserSession(session);
+    }
+    fetchUserData();
+  }, []);
+  const { userName, userEmail } = userSession;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-sm">
           <Avatar className="h-10 w-10 rounded-sm">
             <AvatarImage src="https://eidocxtfxtyvekfduwtv.supabase.co/storage/v1/object/public/user%20image/avatar.png" />
-            <AvatarFallback className="rounded-sm">Laci</AvatarFallback>
+            <AvatarFallback className="rounded-sm">{userName}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -26,8 +42,11 @@ export default function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none"> Laci</p>
-            <p className="text-xs leading-none text-muted-foreground"> asfg@</p>
+            <p className="text-sm font-medium leading-none"> {userName}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {" "}
+              {userEmail}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
