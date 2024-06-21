@@ -46,7 +46,7 @@ export default function UserNav() {
               {" "}
               {userName}
             </p>
-            <p className="text-md lg:text-xs leading-none text-muted-foreground">
+            <p className="text-md lg:text-xs leading-none text-muted-foreground break-words">
               {" "}
               {userEmail}
             </p>
