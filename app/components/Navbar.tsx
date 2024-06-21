@@ -79,7 +79,11 @@ export default function Navbar() {
         >
           <SearchIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
         </button>
-        <SearchBar state={open} changeState={setOpen} />
+        <SearchBar
+          state={open}
+          changeState={setOpen}
+          navbarChangeState={setSheetOpen}
+        />
 
         <BellIcon className="w-6 h-6 text-gray-300 cursor-pointer" />
         <UserNav />
@@ -127,7 +131,11 @@ export default function Navbar() {
                   >
                     <SearchIcon className="w-10 h-10 text-gray-300 cursor-pointer" />
                   </button>
-                  <SearchBar state={open} changeState={setOpen} />
+                  <SearchBar
+                    state={open}
+                    changeState={setOpen}
+                    navbarChangeState={setSheetOpen}
+                  />
 
                   <BellIcon className="w-10 h-10 text-gray-300 cursor-pointer" />
                   <UserNav />

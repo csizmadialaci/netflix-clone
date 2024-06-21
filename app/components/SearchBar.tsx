@@ -12,9 +12,14 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 interface iAppProps {
   state: boolean;
   changeState: any;
+  navbarChangeState: any;
 }
 
-export default function SearchBar({ state, changeState }: iAppProps) {
+export default function SearchBar({
+  state,
+  changeState,
+  navbarChangeState,
+}: iAppProps) {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
 
@@ -42,7 +47,13 @@ export default function SearchBar({ state, changeState }: iAppProps) {
                 name="searchInput"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
-              <Button className="absolute right-10 md:right-5" type="submit">
+              <Button
+                onClick={() => {
+                  navbarChangeState(false);
+                }}
+                className="absolute right-10 md:right-5"
+                type="submit"
+              >
                 Search
               </Button>
             </form>
